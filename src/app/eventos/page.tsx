@@ -1,8 +1,7 @@
-
-export default function Home() {
+export default function Eventos() {
   return (
     <div>
-      <h1>ARK - Sistema de gerenciamento de decorações e festas</h1>
+      <h1>Eventos</h1>
       <p>Em desenvolvimento por <a href="https://github.com/arthur-fenili">Arthur Fenili</a></p>
     </div>
   );
