@@ -1,7 +1,7 @@
 "use client";
 
 import BuffetCard from "@/components/BuffetCard";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { BuffetService } from "@/service/BuffetService";
 import BuffetCardProps from "@/components/BuffetCard/interface";
 
@@ -32,6 +32,7 @@ export default function Buffets() {
         setBuffets([...buffets, response.data]);
         setNovoBuffet({ nome: "", nomeDono: "", endereco: "" });
         setMostrarFormulario(false);
+        // TODO: adicionar um pop-up de sucesso que nao seja alert
       })
       .catch((error) => {
         console.error("Erro ao cadastrar buffet:", error);
