@@ -6,7 +6,7 @@ export default function Header() {
             <div id="container" className="flex flex-col lg:flex-row items-center w-full border-b border-gray-200 shadow-md bg-white">
                 <div className="bg-gray-200 w-full lg:w-auto flex justify-center lg:justify-start">
                     <Link href="/">
-                        <p className="text-white p-4 lg:p-8 text-4xl text-orange-500"><b>A R K</b></p>
+                        <p className="p-4 lg:p-8 text-4xl text-orange-500"><b>A R K</b></p>
                     </Link>
                 </div>
                 <div className="mt-4 lg:mt-0 w-full lg:w-auto flex justify-center lg:justify-start">
