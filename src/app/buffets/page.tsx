@@ -10,15 +10,17 @@ export default function Buffets() {
 
 
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
-
+  const [mostrarModalExclusao, setMostrarModalExclusao] = useState(false);
+  const [buffetSelecionado, setBuffetSelecionado] = useState<string>("");
   const [novoBuffet, setNovoBuffet] = useState({
     nome: "",
     nomeDono: "",
     endereco: ""
   });
-  
   const [buffets, setBuffets] = useState<BuffetCardProps[]>([]);
   const buffetService = new BuffetService();
+
+
 
   const handleSalvar = () => {
     if (!novoBuffet.nome || !novoBuffet.nomeDono || !novoBuffet.endereco) {
@@ -39,6 +41,23 @@ export default function Buffets() {
       });
   };
 
+  const handleExcluir = () => {
+    if (!buffetSelecionado){
+      alert("Selecione um buffet para excluir");
+      return;
+    }
+
+    buffetService
+      .excluir(Number(buffetSelecionado))
+      .then(() => {
+        setBuffets(buffets.filter((b) => b.id !== Number(buffetSelecionado)));
+        setMostrarModalExclusao(false);
+      })
+      .catch((error) => {
+        console.error("Erro ao excluir buffet:", error);
+      });
+  }
+
   useEffect(() => {
     buffetService.listarTodos()
       .then((response) => {
@@ -58,7 +77,10 @@ export default function Buffets() {
       >
         {mostrarFormulario ? "Cancelar" : "Cadastrar Buffet"}
       </button>
-      <button className="border p-3 ml-7 bg-red-500 hover:bg-red-600 rounded-md">
+      
+      <button 
+      className="border p-3 ml-7 bg-red-500 hover:bg-red-600 rounded-md"
+      onClick={() => setMostrarModalExclusao(true)}>
         Excluir Buffet
       </button>
 
@@ -93,6 +115,40 @@ export default function Buffets() {
             >
               Salvar
             </button>
+          </div>
+        </div>
+      )}
+
+{mostrarModalExclusao && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <h2 className="text-xl mb-4">Excluir Buffet</h2>
+            <select
+              value={buffetSelecionado}
+              onChange={(e) => setBuffetSelecionado(e.target.value)}
+              className="w-full p-2 border rounded-md"
+            >
+              <option value="">Selecione um buffet</option>
+              {buffets.map((buffet) => (
+                <option key={buffet.id} value={buffet.id}>
+                  {buffet.nome}
+                </option>
+              ))}
+            </select>
+            <div className="flex justify-between mt-4">
+              <button
+                onClick={() => setMostrarModalExclusao(false)}
+                className="bg-gray-500 text-white p-2 rounded-md hover:bg-gray-600"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={handleExcluir}
+                className="bg-red-500 text-white p-2 rounded-md hover:bg-red-600"
+              >
+                Confirmar Exclusão
+              </button>
+            </div>
           </div>
         </div>
       )}
