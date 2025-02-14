@@ -58,32 +58,36 @@ export default function Buffets() {
       });
   }
 
+
   useEffect(() => {
     buffetService.listarTodos()
       .then((response) => {
         setBuffets(response.data);
       })
       .catch((error) => {
-        console.error(error);
+        console.error("Erro ao listar buffets:",error);
       }); 
   }, []);
 
   return (
     <div>
       <h1 className="text-2xl text-center m-4">BUFFETS CADASTRADOS</h1>
-      <button 
-        className="border p-3 ml-7 bg-green-500 hover:bg-green-600 rounded-md" 
-        onClick={() => setMostrarFormulario(!mostrarFormulario)}
-      >
-        {mostrarFormulario ? "Cancelar" : "Cadastrar Buffet"}
-      </button>
-      
-      <button 
-      className="border p-3 ml-7 bg-red-500 hover:bg-red-600 rounded-md"
-      onClick={() => setMostrarModalExclusao(true)}>
-        Excluir Buffet
-      </button>
 
+      <div className="flex justify-center">
+        <button 
+          className="border p-3 ml-7 bg-green-500 hover:bg-green-600 rounded-md" 
+          onClick={() => setMostrarFormulario(!mostrarFormulario)}
+        >
+          {mostrarFormulario ? "Cancelar" : "Cadastrar Buffet"}
+        </button>
+        
+        <button 
+        className="border p-3 ml-7 bg-red-500 hover:bg-red-600 rounded-md"
+        onClick={() => setMostrarModalExclusao(true)}>
+          Excluir Buffet
+        </button>
+      </div>
+      
       {mostrarFormulario && (
         <div className="border p-4 m-7 rounded-md">
           <h2 className="text-xl mb-4">Cadastrar Novo Buffet</h2>
@@ -119,7 +123,7 @@ export default function Buffets() {
         </div>
       )}
 
-{mostrarModalExclusao && (
+      {mostrarModalExclusao && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded-lg shadow-lg">
             <h2 className="text-xl mb-4">Excluir Buffet</h2>
