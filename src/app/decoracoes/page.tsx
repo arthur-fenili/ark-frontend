@@ -13,7 +13,8 @@ export default function Decoracoes() {
     descricao: "",
   });
   const [decoracoes, setDecoracoes] = useState<DecoracaoCardProps[]>([]);
-
+  const [decoracaoSelecionada, setDecoracaoSelecionada] = useState<string>("");
+  const [mostrarModalExclusao, setMostrarModalExclusao] = useState(false);
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
 
 
@@ -35,6 +36,23 @@ export default function Decoracoes() {
       });
   };
 
+  const handleExcluir = () => {
+    if (!decoracaoSelecionada){
+      alert("Selecione uma decoração para excluir");
+      return;
+    }
+
+    decoracaoService
+      .excluir(Number(decoracaoSelecionada))
+      .then(() =>{
+        setDecoracoes(decoracoes.filter((d) => d.id !== Number(decoracaoSelecionada)));
+        setMostrarModalExclusao(false);
+      })
+      .catch((error) => {
+        console.error("Erro ao excluir decoração:", error);
+      });
+  }
+
   useEffect(() => {
     decoracaoService
       .listarTodos()
@@ -45,6 +63,8 @@ export default function Decoracoes() {
         console.error("Erro ao buscar decorações:", error);
       });
   })
+
+  
 
   return (
     <div>
@@ -60,6 +80,7 @@ export default function Decoracoes() {
 
         <button
           className="border p-3 ml-7 bg-red-500 hover:bg-red-600 rounded-md"
+          onClick={() => setMostrarModalExclusao(true)}
           >
           Excluir Decoração
         </button>
@@ -87,6 +108,32 @@ export default function Decoracoes() {
               onClick={handleSalvar} 
               className="border p-3 bg-green-500 hover:bg-green-600 rounded-md">
               Salvar
+            </button>
+          </div>
+        </div>
+      )}
+
+      {mostrarModalExclusao && (
+        <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-4 rounded-md">
+            <h2 className="text-xl mb-4">Excluir Decoração</h2>
+            <select
+              value={decoracaoSelecionada}
+              onChange={(e) => setDecoracaoSelecionada(e.target.value)}
+              className="w-full p-2 border rounded-md"
+            >
+              <option value="">Selecione uma decoração</option>
+              {decoracoes.map((decoracao) => (
+                <option key={decoracao.id} value={decoracao.id}>
+                  {decoracao.tema}
+                </option>
+              ))}
+            </select>
+            <button
+              onClick={handleExcluir}
+              className="border p-3 bg-red-500 hover:bg-red-600 rounded-md"
+            >
+              Excluir
             </button>
           </div>
         </div>
