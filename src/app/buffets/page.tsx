@@ -69,6 +69,8 @@ export default function Buffets() {
       }); 
   }, []);
 
+
+  
   return (
     <div>
       <h1 className="text-2xl text-center m-4">BUFFETS CADASTRADOS</h1>
